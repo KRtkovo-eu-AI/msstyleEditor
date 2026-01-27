@@ -30,7 +30,6 @@ namespace msstyleEditor.Dialogs
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageView));
             this.imageControl = new msstyleEditor.ImageControl();
             this.imageViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.whiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +45,14 @@ namespace msstyleEditor.Dialogs
             this.tsbImage6 = new System.Windows.Forms.ToolStripButton();
             this.tsbImage7 = new System.Windows.Forms.ToolStripButton();
             this.tsbImage8 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage9 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage10 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage11 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage12 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage13 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage14 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage15 = new System.Windows.Forms.ToolStripButton();
+            this.tsbImage16 = new System.Windows.Forms.ToolStripButton();
             this.imageViewContextMenu.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -128,7 +135,15 @@ namespace msstyleEditor.Dialogs
             this.tsbImage5,
             this.tsbImage6,
             this.tsbImage7,
-            this.tsbImage8});
+            this.tsbImage8,
+            this.tsbImage9,
+            this.tsbImage10,
+            this.tsbImage11,
+            this.tsbImage12,
+            this.tsbImage13,
+            this.tsbImage14,
+            this.tsbImage15,
+            this.tsbImage16});
             this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolStrip.Location = new System.Drawing.Point(0, 196);
             this.toolStrip.Name = "toolStrip";
@@ -142,7 +157,6 @@ namespace msstyleEditor.Dialogs
             this.tsbImage1.CheckOnClick = true;
             this.tsbImage1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tsbImage1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage1.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage1.Image")));
             this.tsbImage1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage1.Name = "tsbImage1";
             this.tsbImage1.Size = new System.Drawing.Size(23, 22);
@@ -154,7 +168,6 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage2.CheckOnClick = true;
             this.tsbImage2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage2.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage2.Image")));
             this.tsbImage2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage2.Name = "tsbImage2";
             this.tsbImage2.Size = new System.Drawing.Size(23, 22);
@@ -166,7 +179,6 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage3.CheckOnClick = true;
             this.tsbImage3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage3.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage3.Image")));
             this.tsbImage3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage3.Name = "tsbImage3";
             this.tsbImage3.Size = new System.Drawing.Size(23, 22);
@@ -178,7 +190,6 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage4.CheckOnClick = true;
             this.tsbImage4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage4.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage4.Image")));
             this.tsbImage4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage4.Name = "tsbImage4";
             this.tsbImage4.Size = new System.Drawing.Size(23, 22);
@@ -190,7 +201,6 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage5.CheckOnClick = true;
             this.tsbImage5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage5.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage5.Image")));
             this.tsbImage5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage5.Name = "tsbImage5";
             this.tsbImage5.Size = new System.Drawing.Size(23, 22);
@@ -202,7 +212,6 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage6.CheckOnClick = true;
             this.tsbImage6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage6.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage6.Image")));
             this.tsbImage6.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage6.Name = "tsbImage6";
             this.tsbImage6.Size = new System.Drawing.Size(23, 22);
@@ -214,7 +223,6 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage7.CheckOnClick = true;
             this.tsbImage7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage7.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage7.Image")));
             this.tsbImage7.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage7.Name = "tsbImage7";
             this.tsbImage7.Size = new System.Drawing.Size(23, 22);
@@ -226,13 +234,92 @@ namespace msstyleEditor.Dialogs
             // 
             this.tsbImage8.CheckOnClick = true;
             this.tsbImage8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbImage8.Image = ((System.Drawing.Image)(resources.GetObject("tsbImage8.Image")));
             this.tsbImage8.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImage8.Name = "tsbImage8";
             this.tsbImage8.Size = new System.Drawing.Size(23, 22);
             this.tsbImage8.Tag = 8;
             this.tsbImage8.Text = "8";
             this.tsbImage8.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage9
+            // 
+            this.tsbImage9.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage9.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage9.Name = "tsbImage9";
+            this.tsbImage9.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage9.Tag = 9;
+            this.tsbImage9.Text = "9";
+            this.tsbImage9.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage10
+            // 
+            this.tsbImage10.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage10.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage10.Name = "tsbImage10";
+            this.tsbImage10.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage10.Tag = 10;
+            this.tsbImage10.Text = "10";
+            this.tsbImage10.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage11
+            // 
+            this.tsbImage11.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage11.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage11.Name = "tsbImage11";
+            this.tsbImage11.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage11.Tag = 11;
+            this.tsbImage11.Text = "11";
+            this.tsbImage11.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage12
+            // 
+            this.tsbImage12.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage12.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage12.Name = "tsbImage12";
+            this.tsbImage12.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage12.Tag = 12;
+            this.tsbImage12.Text = "12";
+            this.tsbImage12.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage13
+            // 
+            this.tsbImage13.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage13.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage13.Name = "tsbImage13";
+            this.tsbImage13.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage13.Tag = 13;
+            this.tsbImage13.Text = "13";
+            this.tsbImage13.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage14
+            // 
+            this.tsbImage14.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage14.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage14.Name = "tsbImage14";
+            this.tsbImage14.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage14.Tag = 14;
+            this.tsbImage14.Text = "14";
+            this.tsbImage14.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage15
+            // 
+            this.tsbImage15.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage15.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage15.Name = "tsbImage15";
+            this.tsbImage15.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage15.Tag = 15;
+            this.tsbImage15.Text = "15";
+            this.tsbImage15.Click += new System.EventHandler(this.OnToolButtonClicked);
+            // 
+            // tsbImage16
+            // 
+            this.tsbImage16.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbImage16.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImage16.Name = "tsbImage16";
+            this.tsbImage16.Size = new System.Drawing.Size(23, 22);
+            this.tsbImage16.Tag = 16;
+            this.tsbImage16.Text = "16";
+            this.tsbImage16.Click += new System.EventHandler(this.OnToolButtonClicked);
             // 
             // ImageView
             // 
@@ -269,5 +356,13 @@ namespace msstyleEditor.Dialogs
         private System.Windows.Forms.ToolStripMenuItem greyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton tsbImage9;
+        private System.Windows.Forms.ToolStripButton tsbImage10;
+        private System.Windows.Forms.ToolStripButton tsbImage11;
+        private System.Windows.Forms.ToolStripButton tsbImage12;
+        private System.Windows.Forms.ToolStripButton tsbImage13;
+        private System.Windows.Forms.ToolStripButton tsbImage14;
+        private System.Windows.Forms.ToolStripButton tsbImage15;
+        private System.Windows.Forms.ToolStripButton tsbImage16;
     }
 }
