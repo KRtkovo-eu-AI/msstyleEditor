@@ -844,6 +844,13 @@ namespace msstyleEditor
             if (m_style == null)
                 return;
 
+            int fontResourceId;
+            if (type == IDENTIFIER.FONT && !Int32.TryParse(search.Replace(" ", ""), out fontResourceId))
+            {
+                ReplaceFontFamily(mode, search, replacement);
+                return;
+            }
+
             var searchObj = MakeObjectFromSearchString(type, search);
             if (searchObj == null)
             {
@@ -858,11 +865,13 @@ namespace msstyleEditor
             if (replacementObj == null)
             {
                 string typeString = VisualStyleProperties.PROPERTY_INFO_MAP[(int)type].Name;
-                MessageBox.Show($"\"{replacementObj}\" doesn't seem to be a valid {typeString} property!", ""
+                MessageBox.Show($"\"{replacement}\" doesn't seem to be a valid {typeString} property!", ""
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Warning);
                 return;
             }
+
+            int replacementCount = 0;
 
             // includeSelectedNode = true, since we replace the matches we can't get stuck.
             // Also, we need to exhaust all matches of the nodes.
@@ -880,21 +889,104 @@ namespace msstyleEditor
                             if (isMatch)
                             {
                                 p.SetValue(replacementObj);
+                                replacementCount++;
                             }
 
-                            return isMatch;
+                            return isMatch && mode == SearchDialog.ReplaceMode.Next;
                         });
-                    });
+                    }) && mode == SearchDialog.ReplaceMode.Next;
                 }
                 else return false;
             });
 
-            if (node == null)
+            if (replacementCount == 0)
             {
                 MessageBox.Show($"No further match for \"{search}\" !\nSearch & replace will begin from top again.", ""
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Information);
             }
+            else if (mode == SearchDialog.ReplaceMode.All)
+            {
+                MessageBox.Show($"Replaced {replacementCount} matching {VisualStyleProperties.PROPERTY_INFO_MAP[(int)type].Name} properties.", ""
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
+            }
+        }
+
+        private void ReplaceFontFamily(SearchDialog.ReplaceMode mode, string searchFamily, string replacementFamily)
+        {
+            int replacementCount = 0;
+
+            foreach (StyleProperty property in GetFontProperties())
+            {
+                int stringId = property.GetValueAs<int>();
+                string font;
+
+                if (!m_style.PreferredStringTable.TryGetValue(stringId, out font) ||
+                    !FontFamilyEquals(font, searchFamily))
+                {
+                    continue;
+                }
+
+                string replacementFont = ReplaceFontFamilyName(font, replacementFamily);
+                foreach (var table in m_style.StringTables.Values)
+                {
+                    if (table.ContainsKey(stringId))
+                    {
+                        table[stringId] = replacementFont;
+                    }
+                }
+
+                replacementCount++;
+
+                if (mode == SearchDialog.ReplaceMode.Next)
+                {
+                    break;
+                }
+            }
+
+            if (replacementCount == 0)
+            {
+                MessageBox.Show($"No further FONT property using family \"{searchFamily}\" was found.", ""
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
+            }
+            else if (mode == SearchDialog.ReplaceMode.All)
+            {
+                MessageBox.Show($"Updated {replacementCount} FONT properties from \"{searchFamily}\" to \"{replacementFamily}\".", ""
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
+            }
+
+            m_propertyView.Refresh();
+        }
+
+        private IEnumerable<StyleProperty> GetFontProperties()
+        {
+            return m_style.Classes.Values
+                .SelectMany(c => c.Parts.Values)
+                .SelectMany(p => p.States.Values)
+                .SelectMany(s => s.Properties)
+                .Where(p => p.Header.typeID == (int)IDENTIFIER.FONT);
+        }
+
+        private static bool FontFamilyEquals(string font, string family)
+        {
+            return String.Equals(GetFontFamilyName(font), family.Trim(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string GetFontFamilyName(string font)
+        {
+            int separator = font.IndexOf(',');
+            return (separator >= 0 ? font.Substring(0, separator) : font).Trim();
+        }
+
+        private static string ReplaceFontFamilyName(string font, string replacementFamily)
+        {
+            int separator = font.IndexOf(',');
+            return separator >= 0
+                ? replacementFamily.Trim() + font.Substring(separator)
+                : replacementFamily.Trim();
         }
 
         private object MakeObjectFromSearchString(IDENTIFIER type, string search)
