@@ -175,6 +175,7 @@ namespace msstyleEditor
             btPropertyAdd.Enabled = true;
             btPropertyRemove.Enabled = true;
             btTestTheme.Enabled = m_themeManager != null ? true : false;
+            btReplaceSegoeUiVariable.Enabled = true;
 
             if (m_style.PreferredStringTable?.Count == 0)
                 btFileSave.Style = RibbonButtonStyle.Normal;
@@ -211,6 +212,7 @@ namespace msstyleEditor
             btPropertyAdd.Enabled = false;
             btPropertyRemove.Enabled = false;
             btTestTheme.Enabled = false;
+            btReplaceSegoeUiVariable.Enabled = false;
 
             lbStylePlatform.Text = "";
             m_style?.Dispose();
@@ -771,6 +773,15 @@ namespace msstyleEditor
             }
         }
 
+
+        private void OnReplaceSegoeUiVariableClicked(object sender, EventArgs e)
+        {
+            if (m_style == null)
+                return;
+
+            ReplaceFontText("Segoe UI Variable", "Segoe UI", true);
+        }
+
         private void OnSearchClicked(object sender, EventArgs e)
         {
             if (!m_searchDialog.Visible)
@@ -844,6 +855,13 @@ namespace msstyleEditor
             if (m_style == null)
                 return;
 
+            int fontResourceId;
+            if (type == IDENTIFIER.FONT && !Int32.TryParse(search.Replace(" ", ""), out fontResourceId))
+            {
+                ReplaceFontFamily(mode, search, replacement);
+                return;
+            }
+
             var searchObj = MakeObjectFromSearchString(type, search);
             if (searchObj == null)
             {
@@ -858,11 +876,13 @@ namespace msstyleEditor
             if (replacementObj == null)
             {
                 string typeString = VisualStyleProperties.PROPERTY_INFO_MAP[(int)type].Name;
-                MessageBox.Show($"\"{replacementObj}\" doesn't seem to be a valid {typeString} property!", ""
+                MessageBox.Show($"\"{replacement}\" doesn't seem to be a valid {typeString} property!", ""
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Warning);
                 return;
             }
+
+            int replacementCount = 0;
 
             // includeSelectedNode = true, since we replace the matches we can't get stuck.
             // Also, we need to exhaust all matches of the nodes.
@@ -880,21 +900,101 @@ namespace msstyleEditor
                             if (isMatch)
                             {
                                 p.SetValue(replacementObj);
+                                replacementCount++;
                             }
 
-                            return isMatch;
+                            return isMatch && mode == SearchDialog.ReplaceMode.Next;
                         });
-                    });
+                    }) && mode == SearchDialog.ReplaceMode.Next;
                 }
                 else return false;
             });
 
-            if (node == null)
+            if (replacementCount == 0)
             {
                 MessageBox.Show($"No further match for \"{search}\" !\nSearch & replace will begin from top again.", ""
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Information);
             }
+            else if (mode == SearchDialog.ReplaceMode.All)
+            {
+                MessageBox.Show($"Replaced {replacementCount} matching {VisualStyleProperties.PROPERTY_INFO_MAP[(int)type].Name} properties.", ""
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
+            }
+        }
+
+        private void ReplaceFontFamily(SearchDialog.ReplaceMode mode, string searchFamily, string replacementFamily)
+        {
+            ReplaceFontText(searchFamily, replacementFamily, mode == SearchDialog.ReplaceMode.All);
+        }
+
+        private void ReplaceFontText(string searchText, string replacementText, bool replaceAll)
+        {
+            int replacementCount = 0;
+
+            foreach (var table in m_style.StringTables.Values)
+            {
+                foreach (int stringId in table.Keys.ToList())
+                {
+                    string font = table[stringId];
+                    if (font.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        continue;
+                    }
+
+                    table[stringId] = ReplaceTextIgnoreCase(font, searchText, replacementText);
+                    replacementCount++;
+
+                    if (!replaceAll)
+                    {
+                        break;
+                    }
+                }
+
+                if (replacementCount > 0 && !replaceAll)
+                {
+                    break;
+                }
+            }
+
+            if (replacementCount == 0)
+            {
+                MessageBox.Show($"No string containing \"{searchText}\" was found.", ""
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Updated {replacementCount} string resources from \"{searchText}\" to \"{replacementText}\".", ""
+                    , MessageBoxButtons.OK
+                    , MessageBoxIcon.Information);
+            }
+
+            m_propertyView.Refresh();
+        }
+
+        private IEnumerable<StyleProperty> GetFontProperties()
+        {
+            return m_style.Classes.Values
+                .SelectMany(c => c.Parts.Values)
+                .SelectMany(p => p.States.Values)
+                .SelectMany(s => s.Properties)
+                .Where(p => p.Header.typeID == (int)IDENTIFIER.FONT);
+        }
+
+        private static string ReplaceTextIgnoreCase(string text, string searchText, string replacementText)
+        {
+            int index = text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+            while (index >= 0)
+            {
+                text = text.Substring(0, index) +
+                    replacementText +
+                    text.Substring(index + searchText.Length);
+                index = text.IndexOf(searchText, index + replacementText.Length, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return text;
         }
 
         private object MakeObjectFromSearchString(IDENTIFIER type, string search)

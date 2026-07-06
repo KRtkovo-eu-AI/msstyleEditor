@@ -38,7 +38,7 @@ namespace msstyleEditor
             "x; y",
             "l; t; r; b",
             "id",
-            "id"
+            "id or font family"
         };
 
         public enum SearchMode

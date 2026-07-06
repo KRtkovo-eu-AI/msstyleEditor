@@ -110,7 +110,6 @@ namespace msstyleEditor
             this.btReplaceAll.Size = new System.Drawing.Size(32, 22);
             this.btReplaceAll.TabIndex = 6;
             this.btReplaceAll.UseVisualStyleBackColor = true;
-            this.btReplaceAll.Visible = false;
             this.btReplaceAll.Click += new System.EventHandler(this.OnReplaceAllClicked);
             // 
             // btReplaceNext
@@ -119,7 +118,7 @@ namespace msstyleEditor
             this.btReplaceNext.Image = ((System.Drawing.Image)(resources.GetObject("btReplaceNext.Image")));
             this.btReplaceNext.Location = new System.Drawing.Point(150, 77);
             this.btReplaceNext.Name = "btReplaceNext";
-            this.btReplaceNext.Size = new System.Drawing.Size(65, 22);
+            this.btReplaceNext.Size = new System.Drawing.Size(32, 22);
             this.btReplaceNext.TabIndex = 5;
             this.btReplaceNext.UseVisualStyleBackColor = true;
             this.btReplaceNext.Click += new System.EventHandler(this.OnReplaceNextClicked);
