@@ -52,6 +52,7 @@ namespace msstyleEditor
             this.btPropertyExport = new System.Windows.Forms.RibbonButton();
             this.ribbonPanelSearch = new System.Windows.Forms.RibbonPanel();
             this.btSearch = new System.Windows.Forms.RibbonButton();
+            this.btReplaceSegoeUiVariable = new System.Windows.Forms.RibbonButton();
             this.tabView = new System.Windows.Forms.RibbonTab();
             this.ribbonPanelClassView = new System.Windows.Forms.RibbonPanel();
             this.btExpandTree = new System.Windows.Forms.RibbonButton();
@@ -297,6 +298,7 @@ namespace msstyleEditor
             // 
             this.ribbonPanelSearch.ButtonMoreVisible = false;
             this.ribbonPanelSearch.Items.Add(this.btSearch);
+            this.ribbonPanelSearch.Items.Add(this.btReplaceSegoeUiVariable);
             this.ribbonPanelSearch.Name = "ribbonPanelSearch";
             this.ribbonPanelSearch.Text = "Search";
             // 
@@ -308,6 +310,16 @@ namespace msstyleEditor
             this.btSearch.SmallImage = ((System.Drawing.Image)(resources.GetObject("btSearch.SmallImage")));
             this.btSearch.Text = "Search";
             this.btSearch.Click += new System.EventHandler(this.OnSearchClicked);
+            //
+            // btReplaceSegoeUiVariable
+            //
+            this.btReplaceSegoeUiVariable.Image = ((System.Drawing.Image)(resources.GetObject("btSearch.Image")));
+            this.btReplaceSegoeUiVariable.LargeImage = ((System.Drawing.Image)(resources.GetObject("btSearch.LargeImage")));
+            this.btReplaceSegoeUiVariable.Name = "btReplaceSegoeUiVariable";
+            this.btReplaceSegoeUiVariable.SmallImage = ((System.Drawing.Image)(resources.GetObject("btSearch.SmallImage")));
+            this.btReplaceSegoeUiVariable.Text = "Segoe UI";
+            this.btReplaceSegoeUiVariable.ToolTip = "Replace all Segoe UI Variable font references with Segoe UI";
+            this.btReplaceSegoeUiVariable.Click += new System.EventHandler(this.OnReplaceSegoeUiVariableClicked);
             // 
             // tabView
             // 
@@ -620,6 +632,7 @@ namespace msstyleEditor
         private System.Windows.Forms.RibbonButton btLicense;
         private System.Windows.Forms.RibbonPanel ribbonPanelSearch;
         private System.Windows.Forms.RibbonButton btSearch;
+        private System.Windows.Forms.RibbonButton btReplaceSegoeUiVariable;
         private System.Windows.Forms.ToolStripStatusLabel lbImageInfo;
         private System.Windows.Forms.RibbonButton btFileSaveWithMUI;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;

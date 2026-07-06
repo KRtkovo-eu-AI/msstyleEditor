@@ -175,6 +175,7 @@ namespace msstyleEditor
             btPropertyAdd.Enabled = true;
             btPropertyRemove.Enabled = true;
             btTestTheme.Enabled = m_themeManager != null ? true : false;
+            btReplaceSegoeUiVariable.Enabled = true;
 
             if (m_style.PreferredStringTable?.Count == 0)
                 btFileSave.Style = RibbonButtonStyle.Normal;
@@ -211,6 +212,7 @@ namespace msstyleEditor
             btPropertyAdd.Enabled = false;
             btPropertyRemove.Enabled = false;
             btTestTheme.Enabled = false;
+            btReplaceSegoeUiVariable.Enabled = false;
 
             lbStylePlatform.Text = "";
             m_style?.Dispose();
@@ -771,6 +773,15 @@ namespace msstyleEditor
             }
         }
 
+
+        private void OnReplaceSegoeUiVariableClicked(object sender, EventArgs e)
+        {
+            if (m_style == null)
+                return;
+
+            ReplaceFontText("Segoe UI Variable", "Segoe UI", true);
+        }
+
         private void OnSearchClicked(object sender, EventArgs e)
         {
             if (!m_searchDialog.Visible)
@@ -915,31 +926,33 @@ namespace msstyleEditor
 
         private void ReplaceFontFamily(SearchDialog.ReplaceMode mode, string searchFamily, string replacementFamily)
         {
+            ReplaceFontText(searchFamily, replacementFamily, mode == SearchDialog.ReplaceMode.All);
+        }
+
+        private void ReplaceFontText(string searchText, string replacementText, bool replaceAll)
+        {
             int replacementCount = 0;
 
-            foreach (StyleProperty property in GetFontProperties())
+            foreach (var table in m_style.StringTables.Values)
             {
-                int stringId = property.GetValueAs<int>();
-                string font;
-
-                if (!m_style.PreferredStringTable.TryGetValue(stringId, out font) ||
-                    !FontFamilyEquals(font, searchFamily))
+                foreach (int stringId in table.Keys.ToList())
                 {
-                    continue;
-                }
-
-                string replacementFont = ReplaceFontFamilyName(font, replacementFamily);
-                foreach (var table in m_style.StringTables.Values)
-                {
-                    if (table.ContainsKey(stringId))
+                    string font = table[stringId];
+                    if (font.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) < 0)
                     {
-                        table[stringId] = replacementFont;
+                        continue;
+                    }
+
+                    table[stringId] = ReplaceTextIgnoreCase(font, searchText, replacementText);
+                    replacementCount++;
+
+                    if (!replaceAll)
+                    {
+                        break;
                     }
                 }
 
-                replacementCount++;
-
-                if (mode == SearchDialog.ReplaceMode.Next)
+                if (replacementCount > 0 && !replaceAll)
                 {
                     break;
                 }
@@ -947,13 +960,13 @@ namespace msstyleEditor
 
             if (replacementCount == 0)
             {
-                MessageBox.Show($"No further FONT property using family \"{searchFamily}\" was found.", ""
+                MessageBox.Show($"No string containing \"{searchText}\" was found.", ""
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Information);
             }
-            else if (mode == SearchDialog.ReplaceMode.All)
+            else
             {
-                MessageBox.Show($"Updated {replacementCount} FONT properties from \"{searchFamily}\" to \"{replacementFamily}\".", ""
+                MessageBox.Show($"Updated {replacementCount} string resources from \"{searchText}\" to \"{replacementText}\".", ""
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Information);
             }
@@ -970,23 +983,18 @@ namespace msstyleEditor
                 .Where(p => p.Header.typeID == (int)IDENTIFIER.FONT);
         }
 
-        private static bool FontFamilyEquals(string font, string family)
+        private static string ReplaceTextIgnoreCase(string text, string searchText, string replacementText)
         {
-            return String.Equals(GetFontFamilyName(font), family.Trim(), StringComparison.OrdinalIgnoreCase);
-        }
+            int index = text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+            while (index >= 0)
+            {
+                text = text.Substring(0, index) +
+                    replacementText +
+                    text.Substring(index + searchText.Length);
+                index = text.IndexOf(searchText, index + replacementText.Length, StringComparison.OrdinalIgnoreCase);
+            }
 
-        private static string GetFontFamilyName(string font)
-        {
-            int separator = font.IndexOf(',');
-            return (separator >= 0 ? font.Substring(0, separator) : font).Trim();
-        }
-
-        private static string ReplaceFontFamilyName(string font, string replacementFamily)
-        {
-            int separator = font.IndexOf(',');
-            return separator >= 0
-                ? replacementFamily.Trim() + font.Substring(separator)
-                : replacementFamily.Trim();
+            return text;
         }
 
         private object MakeObjectFromSearchString(IDENTIFIER type, string search)
